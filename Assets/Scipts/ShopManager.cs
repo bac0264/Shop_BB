@@ -60,7 +60,9 @@ public class ShopManager : MonoBehaviour
         }
         coinManager.UpdateCoin();
         UpdateUI();
+        snap._setupStart();
     }
+    
     // update UI
     public void UpdateUI()
     {
@@ -84,4 +86,25 @@ public class ShopManager : MonoBehaviour
             }
         }
     }
+    public void _buyItem(int i)
+    {
+        int requestCoin = itemList[i].itemCoin;
+        if (coinManager.requestCoin(requestCoin))
+        {
+            itemList[i].bought = true;
+            PlayerPrefs.SetInt("currentItemID", itemList[i].itemID);
+            coinManager.reduceCoin(requestCoin);
+            boughtList.Add(itemList[i]);
+            currentItemID = i;
+            UpdateUI();
+            //Destroy(Instantiate(effectBuyingItem, shopManager.itemObjectList[i].transform));
+            //SaveLoad.instance.saving();
+            //SaveLoad.instance.savingStar_2();
+
+        }
+        else
+        {
+        }
+    }
 }
+

@@ -10,6 +10,7 @@ public class CoinManager : MonoBehaviour {
     private void Start()
     {
         if (instance == null) instance = this;
+        coin = 600;
     }
     public void addCoin(int amount)
     {

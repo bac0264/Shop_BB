@@ -5,21 +5,19 @@ using UnityEngine.UI;
 public class Snap : MonoBehaviour
 {
     public RectTransform panel; // to hold the scrollView
-    public List<Button> btnn = new List<Button>(); // 
+    public List<Button> btnn; // 
     public RectTransform center; // Center to compare the distance for each iten 
     public float[] distance; // All Item's center
     private bool dragging = false;
-    public int bttnDistance;
-    public int minButtonNum;
+    private int bttnDistance;
+    private int minButtonNum;
     // Use this for initialization
-    public void Awake()
+    public void _setupStart()
     {
         distance = new float[btnn.Count];
-        Debug.Log("btnn: " + btnn.Count);
-        Debug.Log("btnn1: " + btnn[1].GetComponent<RectTransform>().anchoredPosition.x +
-            " btn0: " + btnn[0].GetComponent<RectTransform>().anchoredPosition.x + "distance: "+ (btnn[1].GetComponent<RectTransform>().anchoredPosition.x - btnn[0].GetComponent<RectTransform>().anchoredPosition.x));
         // distance between
-        bttnDistance = (int)Mathf.Abs(btnn[1].GetComponent<RectTransform>().anchoredPosition.x - btnn[0].GetComponent<RectTransform>().anchoredPosition.x);
+        bttnDistance = 210;
+        //bttnDistance = (int)Mathf.Abs(btnn[1].GetComponent<RectTransform>().anchoredPosition.x - btnn[0].GetComponent<RectTransform>().anchoredPosition.x);
         // startSnap = true;
         LerpToImage(minButtonNum * (-bttnDistance));
     }
@@ -30,6 +28,7 @@ public class Snap : MonoBehaviour
             distance[i] = (int)Mathf.Abs(center.transform.position.x - btnn[i].transform.position.x);
         }
         float minDistance = Mathf.Min(distance);
+        Debug.Log("minDistance: " + minDistance);
         for (int a = 0; a < btnn.Count; a++)
         {
             if (minDistance == distance[a])
@@ -59,5 +58,12 @@ public class Snap : MonoBehaviour
     {
         dragging = false;
     }
-
+    public int getMinButtonNum()
+    {
+        return minButtonNum;
+    }
+    public bool getDrag()
+    {
+        return dragging;
+    }
 }
