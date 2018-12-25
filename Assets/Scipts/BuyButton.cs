@@ -49,11 +49,28 @@ public class BuyButton : MonoBehaviour
         itemCoinText.text = shopManager.itemList[i].itemCoin.ToString();
         if (!shopManager.itemList[i].bought)
         {
-            state.text = "Unlock";
+            gameObject.GetComponent<Image>().enabled = true;
+            Transform childs = gameObject.transform;
+            int count = gameObject.transform.childCount;
+            if (count == 0)
+                return;
+            for (int j = 0; j < count; j++)
+            {
+                childs.GetChild(j).gameObject.SetActive(true);
+            }
+            state.text = "UNLOCK";
         }
         else
         {
-            state.text = "Lock";
+            gameObject.GetComponent<Image>().enabled = false;
+            Transform childs = gameObject.transform;
+            int count = gameObject.transform.childCount;
+            if (count == 0)
+                return;
+            for (int j = 0; j < count; j++)
+            {
+                childs.GetChild(j).gameObject.SetActive(false);
+            }
         }
     }
     // Check if chua mua thi xu ly, da mua roi thi update
