@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BuyButton : MonoBehaviour
 {
-
     public static BuyButton instance;
     public int itemID;
     public ShopManager shopManager;
@@ -105,23 +104,6 @@ public class BuyButton : MonoBehaviour
     public void _buyingProcess()
     {
         int i = itemID;
-        //int requestCoin = shopManager.itemList[i].itemCoin;
-        //if (shopManager.coinManager.requestCoin(requestCoin))
-        //{
-        //    shopManager.itemList[i].bought = true;
-        //    PlayerPrefs.SetInt("currentItemID", shopManager.itemList[i].itemID);
-        //    shopManager.coinManager.reduceCoin(requestCoin);
-        //    shopManager.boughtList.Add(shopManager.itemList[i]);
-        //    shopManager.currentItemID = itemID;
-        //    shopManager.UpdateUI();
-        //    //Destroy(Instantiate(effectBuyingItem, shopManager.itemObjectList[i].transform));
-        //    //SaveLoad.instance.saving();
-        //    //SaveLoad.instance.savingStar_2();
-
-        //}
-        //else
-        //{
-        //}
         shopManager._buyItem(i);
     }
 }

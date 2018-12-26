@@ -5,17 +5,24 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class ShopManager : MonoBehaviour
 {
+    private Color unBought = new Color(243f / 255, 184f / 255, 95f / 255, 255f / 255);
+
     public static ShopManager instance;
     public CoinManager coinManager;
     public Snap snap;
+
     public List<GameObject> itemObjectList = new List<GameObject>();
     public List<Item> itemList = new List<Item>();
     public List<Item> boughtList = new List<Item>();
-    public int currentItemID = 0;
     public List<Sprite> imageItemList = new List<Sprite>();
+
+    int count;
+    public int currentItemID = 0;
     public Transform container;
     public GameObject prefItem;
-    int count;
+    public Material fontsMaterial;
+
+
     private void Start()
     {
         count = itemList.Count;
@@ -24,8 +31,7 @@ public class ShopManager : MonoBehaviour
         if (instance == null) instance = this;
 
         //Load data
-       // SaveLoad.instance.loading();
-       // SaveLoad.instance.loadingStar_2();
+        SaveLoad.instance.loading(this,coinManager.coin);
 
         // setup ui
         if (itemList != null)
@@ -36,10 +42,14 @@ public class ShopManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject obj = Instantiate(prefItem, container, false);
-
+            itemObjectList.Add(obj);
+            snap.btnn.Add(obj.GetComponent<Button>());
             // xet da mua
             if (itemList[i].bought)
             {
+                itemObjectList[i].transform.GetChild(0).GetComponent<Image>().material = null;
+                itemObjectList[i].transform.GetChild(0).GetComponent<Image>().color
+                     = new Color(1, 1, 1, 1);
                 // snake chua su dung
                 if (itemList[i].itemID != currentItemID)
                 {
@@ -55,8 +65,6 @@ public class ShopManager : MonoBehaviour
             {
 
             }
-            itemObjectList.Add(obj);
-            snap.btnn.Add(obj.GetComponent<Button>());
         }
         coinManager.UpdateCoin();
         UpdateUI();
@@ -74,6 +82,9 @@ public class ShopManager : MonoBehaviour
 
                 if (itemList[j].bought == boughtList[i].bought)
                 {
+                    itemObjectList[j].transform.GetChild(0).GetComponent<Image>().material = null;
+                    itemObjectList[j].transform.GetChild(0).GetComponent<Image>().color
+                         = new Color(1, 1, 1, 1);
                     // snake item da mua nhung k su dung
                     if (itemList[j].itemID != currentItemID)
                     {
@@ -98,7 +109,7 @@ public class ShopManager : MonoBehaviour
             currentItemID = i;
             UpdateUI();
             //Destroy(Instantiate(effectBuyingItem, shopManager.itemObjectList[i].transform));
-            //SaveLoad.instance.saving();
+            SaveLoad.instance.saving(this);
             //SaveLoad.instance.savingStar_2();
 
         }

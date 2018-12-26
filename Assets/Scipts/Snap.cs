@@ -34,7 +34,6 @@ public class Snap : MonoBehaviour
             if (minDistance == distance[a])
             {
                 minButtonNum = a;
-                Debug.Log("minButton: " + a);
                 break;
             }
         }
@@ -46,7 +45,6 @@ public class Snap : MonoBehaviour
 
     public void LerpToImage(int position)
     {
-        Debug.Log(position);
         float newX = Mathf.Lerp(panel.anchoredPosition.x, position, Time.deltaTime * 3);
       //  float newX = position;
         Vector2 newPosition = new Vector2(newX, panel.anchoredPosition.y);
