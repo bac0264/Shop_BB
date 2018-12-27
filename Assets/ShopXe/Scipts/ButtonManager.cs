@@ -9,4 +9,8 @@ public class ButtonManager : MonoBehaviour {
     {
         buyButton._toBuyItem();
     }
+    public void Oke()
+    {
+        buyButton.Oke();
+    }
 }

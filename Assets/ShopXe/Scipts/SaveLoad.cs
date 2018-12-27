@@ -8,7 +8,6 @@ public class SaveLoad : MonoBehaviour
 {
     public static SaveLoad instance;
     private string urlShop = "/shop.txt";
-    private int coin;
     private void Awake()
     {
         if (instance == null)
@@ -27,6 +26,18 @@ public class SaveLoad : MonoBehaviour
         public List<Item> itemList = new List<Item>();
         public List<Item> boughts = new List<Item>();
         public int currentItemID = 0;
+        public int coin = 500;
+    }
+
+    public class SaveData_2
+    {
+        public List<Item> bgList = new List<Item>();
+        public List<Item> boughts = new List<Item>();
+        public int currentItemID = 0;
+    }
+
+    public class SaveCoin
+    {
         public int coin;
     }
     public void saving(ShopManager shopManager)
@@ -48,7 +59,7 @@ public class SaveLoad : MonoBehaviour
                 saveData.boughts.Add(shopManager.boughtList[i]);
             }
             saveData.currentItemID = shopManager.currentItemID;
-            saveData.coin = coin;
+            saveData.coin = shopManager.coinManager.getCoin();
             //
             BinaryFormatter bf = new BinaryFormatter();
             FileStream fs = new FileStream(Application.persistentDataPath + urlShop, FileMode.OpenOrCreate);
@@ -61,7 +72,7 @@ public class SaveLoad : MonoBehaviour
         }
         print("saved data to " + Application.persistentDataPath + urlShop);
     }
-    public void loading(ShopManager shopManager, int _coin)
+    public void loading(ShopManager shopManager)
     {
         Debug.Log(Application.persistentDataPath + urlShop);
         if (File.Exists(Application.persistentDataPath + urlShop))
@@ -85,12 +96,34 @@ public class SaveLoad : MonoBehaviour
                     shopManager.itemList.Add(saveData.itemList[i]);
                 }
                 shopManager.currentItemID = saveData.currentItemID;
-                coin = _coin;
+                shopManager.coinManager.setCoin(saveData.coin);
             }
             catch (Exception e)
             {
                 print(e);
             }
         }
+    }
+
+    public void savingCoin(ShopManager shopManager)
+    {
+        try
+        {
+            Debug.Log("shopManager: " + shopManager);
+            SaveCoin saveData = new SaveCoin();
+            // Save Data
+            // Do something
+            saveData.coin = shopManager.coinManager.getCoin();
+            //
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream fs = new FileStream(Application.persistentDataPath + urlShop, FileMode.OpenOrCreate);
+            bf.Serialize(fs, saveData);
+            fs.Close();
+        }
+        catch (Exception e)
+        {
+            print(e);
+        }
+        print("saved data to " + Application.persistentDataPath + urlShop);
     }
 }

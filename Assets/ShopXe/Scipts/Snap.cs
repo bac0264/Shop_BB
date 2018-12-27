@@ -12,40 +12,46 @@ public class Snap : MonoBehaviour
     private bool dragging = false;
     public int bttnDistance;
     private int minButtonNum;
+    private bool checkStart;
     // Use this for initialization
     public void _setupStart()
     {
+        checkStart = false;
         distance = new float[btnn.Count];
         // distance between
-        bttnDistance = 290;
-        _initPos(minButtonNum * (-bttnDistance));
+        bttnDistance = 270;
+        minButtonNum = PlayerPrefs.GetInt("currentItemID");
+        _initPos((minButtonNum )* (-bttnDistance));
        // bttnDistance = (int)Mathf.Abs(btnn[1].GetComponent<RectTransform>().anchoredPosition.x - btnn[0].GetComponent<RectTransform>().anchoredPosition.x);
     }
     private void Update()
     {
-        for (int i = 0; i < btnn.Count; i++)
+        if (checkStart)
         {
-            distance[i] = (int)Mathf.Abs(center.transform.position.x - btnn[i].transform.position.x);
-        }
-        float minDistance = Mathf.Min(distance);
-
-        for (int a = 0; a < btnn.Count; a++)
-        {
-            if (minDistance == distance[a])
+            for (int i = 0; i < btnn.Count; i++)
             {
-                minButtonNum = a;
-                break;
+                distance[i] = (int)Mathf.Abs(center.transform.position.x - btnn[i].transform.position.x);
             }
-        }
-        if (!dragging)
-        {
-            LerpToImage(minButtonNum * (-bttnDistance));
+            float minDistance = Mathf.Min(distance);
+
+            for (int a = 0; a < btnn.Count; a++)
+            {
+                if (minDistance == distance[a])
+                {
+                    minButtonNum = a;
+                    break;
+                }
+            }
+            if (!dragging)
+            {
+                LerpToImage(minButtonNum * (-bttnDistance));
+            }
         }
     }
 
     public void LerpToImage(int position)
     {
-        float newX = Mathf.Lerp(panel.anchoredPosition.x, position, Time.deltaTime * 3);
+        float newX = Mathf.Lerp(panel.anchoredPosition.x, position, 0.1f);
       //  float newX = position;
         Vector2 newPosition = new Vector2(newX, panel.anchoredPosition.y);
         panel.anchoredPosition = newPosition;
@@ -55,6 +61,7 @@ public class Snap : MonoBehaviour
         float newX = position;
         Vector2 newPosition = new Vector2(newX, panel.anchoredPosition.y);
         panel.anchoredPosition = newPosition;
+        checkStart = true;
     }
     public void StartDrag()
     {

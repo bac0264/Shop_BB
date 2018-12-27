@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 public class CoinManager : MonoBehaviour {
     public static CoinManager instance;
-    public int coin;
+    private int coin;
     public Text coinText;
 
     private void Start()
     {
         if (instance == null) instance = this;
-        coin = 600;
+        coin = 1000;
     }
     public void addCoin(int amount)
     {
@@ -30,5 +30,13 @@ public class CoinManager : MonoBehaviour {
     public void UpdateCoin()
     {
         coinText.text = coin.ToString();
+    }
+    public void setCoin(int _coin)
+    {
+        coin = _coin;
+    }
+    public int getCoin()
+    {
+        return coin;
     }
 }

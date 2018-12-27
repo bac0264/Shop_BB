@@ -14,7 +14,6 @@ public class BuyButton : MonoBehaviour
     {
         if (instance != null) instance = this;
         itemID = shopManager.snap.getMinButtonNum();
-        Debug.Log("itemID: " + itemID);
     }
     private void Update()
     {
@@ -42,6 +41,15 @@ public class BuyButton : MonoBehaviour
         // check bought
         checkBought(i);
     }
+
+    // update Item
+    public void Oke()
+    {
+        if (shopManager.itemList[getIndexOfItem()].bought){
+            _updateUI(itemID);
+        }
+    }
+
     // Show BuyButton (Sate, Coin)
     public void checkShow(int i)
     {
@@ -77,13 +85,11 @@ public class BuyButton : MonoBehaviour
     {
         if (!shopManager.itemList[i].bought)
         {
-            _buyingProcess();
+            _buyingProcess(itemID);
         }
         else
         {
-            PlayerPrefs.SetInt("currentID", itemID);
-            shopManager.currentItemID = itemID;
-            shopManager.UpdateUI();
+            _updateUI(itemID);
             //   SaveLoad.instance.saving();
         }
     }
@@ -101,9 +107,14 @@ public class BuyButton : MonoBehaviour
         return 0;
     }
     // xu ly mua
-    public void _buyingProcess()
+    void _buyingProcess(int _itemID)
     {
-        int i = itemID;
-        shopManager._buyItem(i);
+        shopManager._buyItem(_itemID);
     }
+
+    void _updateUI(int _itemID)
+    {
+        shopManager._updateItem(_itemID);
+    }
+    
 }

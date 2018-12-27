@@ -3,35 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-public class ShopManager : MonoBehaviour
+public class CarShop : ShopManager
 {
     private Color unBought = new Color(243f / 255, 184f / 255, 95f / 255, 255f / 255);
-
-    public static ShopManager instance;
-    public CoinManager coinManager;
-    public Snap snap;
-
-    public List<GameObject> itemObjectList = new List<GameObject>();
-    public List<Item> itemList = new List<Item>();
-    public List<Item> boughtList = new List<Item>();
-    public List<Sprite> imageItemList = new List<Sprite>();
-
-    int count;
-    public int currentItemID = 0;
-    public Transform container;
-    public GameObject prefItem;
-    public Material fontsMaterial;
-
-
     private void Start()
     {
+        PlayerPrefs.DeleteAll();
         count = itemList.Count;
         currentItemID = PlayerPrefs.GetInt("currentItemID");
         Debug.Log("currentItemID");
         if (instance == null) instance = this;
 
         //Load data
-        SaveLoad.instance.loading(this,coinManager.coin);
+        SaveLoad.instance.loading(this);
 
         // setup ui
         if (itemList != null)
@@ -70,11 +54,12 @@ public class ShopManager : MonoBehaviour
         UpdateUI();
         snap._setupStart();
     }
-    
+
     // update UI
+    override
     public void UpdateUI()
     {
-        PlayerPrefs.SetInt("currentID", currentItemID);
+        PlayerPrefs.SetInt("currentItemID", currentItemID);
         for (int i = 0; i < boughtList.Count; i++)
         {
             for (int j = 0; j < itemList.Count; j++)
@@ -95,26 +80,6 @@ public class ShopManager : MonoBehaviour
                     }
                 }
             }
-        }
-    }
-    public void _buyItem(int i)
-    {
-        int requestCoin = itemList[i].itemCoin;
-        if (coinManager.requestCoin(requestCoin))
-        {
-            itemList[i].bought = true;
-            PlayerPrefs.SetInt("currentItemID", itemList[i].itemID);
-            coinManager.reduceCoin(requestCoin);
-            boughtList.Add(itemList[i]);
-            currentItemID = i;
-            UpdateUI();
-            //Destroy(Instantiate(effectBuyingItem, shopManager.itemObjectList[i].transform));
-            SaveLoad.instance.saving(this);
-            //SaveLoad.instance.savingStar_2();
-
-        }
-        else
-        {
         }
     }
 }
