@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 public class ShopManager : MonoBehaviour
 {
-    public static ShopManager instance;
     public CoinManager coinManager;
     public Snap snap;
 
@@ -14,6 +11,7 @@ public class ShopManager : MonoBehaviour
     public List<Item> boughtList = new List<Item>();
     public List<Sprite> imageItemList = new List<Sprite>();
 
+    public string urlShop;
     public int count;
     public int currentItemID = 0;
     public Transform container;
@@ -29,14 +27,12 @@ public class ShopManager : MonoBehaviour
         if (coinManager.requestCoin(requestCoin))
         {
             itemList[i].bought = true;
-            PlayerPrefs.SetInt("currentItemID", itemList[i].itemID);
+           // PlayerPrefs.SetInt("currentItemID", itemList[i].itemID);
             coinManager.reduceCoin(requestCoin);
             boughtList.Add(itemList[i]);
             currentItemID = i;
             UpdateUI();
             //Destroy(Instantiate(effectBuyingItem, shopManager.itemObjectList[i].transform));
-            SaveLoad.instance.saving(this);
-            Debug.Log("curret buy: " + currentItemID);
         }
         else
         {
@@ -44,11 +40,13 @@ public class ShopManager : MonoBehaviour
     }
     public virtual void _updateItem(int itemID)
     {
-        PlayerPrefs.SetInt("currentItemID", itemID);
+        //PlayerPrefs.SetInt("currentItemID", itemID);
         currentItemID = itemID;
         UpdateUI();
-        SaveLoad.instance.saving(this);
         Debug.Log("curret update: " + currentItemID);
     }
+    public virtual void saving(){}
+    
+    public virtual void loading(){}
 }
 
